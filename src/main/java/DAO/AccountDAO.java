@@ -7,6 +7,7 @@ import java.util.*;
 
 public class AccountDAO {
 
+    // Implementation to get all accounts
     public List<Account> getAllAccounts() {
         Connection connection = ConnectionUtil.getConnection();
         List<Account> accounts = new ArrayList<>();
@@ -27,6 +28,7 @@ public class AccountDAO {
         return accounts;
     }
 
+    // Implementation to add an account
     public Account insertAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -49,6 +51,7 @@ public class AccountDAO {
         return null;
     }
 
+    // Implementation to get an account by the user's information
     public Account getUserAccount(String username) {
         Connection connection = ConnectionUtil.getConnection();
         try {

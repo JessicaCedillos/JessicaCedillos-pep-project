@@ -16,14 +16,23 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
+    // Returns all the accounts
     public List<Account> getAccounts() {
         return accountDAO.getAllAccounts();
     }
 
+    // Adds account if they meet requirements
     public Account addAccount(Account account) {
+        if(account.getUsername() == null || 
+        account.getUsername().isBlank() || 
+        account.getPassword() == null || 
+        account.getPassword().length() < 4) {
+            return null;
+        }   
         return accountDAO.insertAccount(account);
     }
     
+    // Verifies if the account information matches
     public Account verifyAccount(String username, String password) {
         List<Account> accounts = getAccounts();
         for(Account a : accounts) {

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class MessageDAO {
     
+    // Implementation to get all messages
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -29,6 +30,7 @@ public class MessageDAO {
         return messages;
     }
 
+    // Implementation to get a message by user
     public List<Message> getMessagesFromUser(int posted_by) { 
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -52,6 +54,7 @@ public class MessageDAO {
         return messages;
     }
 
+    // Implementation to create a message
     public Message insertMessage(Message message) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -77,6 +80,7 @@ public class MessageDAO {
         return null;
     }
 
+    // Implementation to delete a message
     public Message deleteMessage(int id) {
         Connection connection = ConnectionUtil.getConnection();
         Message message = null;
@@ -101,7 +105,7 @@ public class MessageDAO {
         }
         return message;
     }
-    
+    // Implementation to update a message
     public Message updateMessage(int id, String message_text) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -129,6 +133,7 @@ public class MessageDAO {
         return null;
     }
     
+    // Implementation to get a message by its message id
     public Message getMessageById(int id) {
         Connection connection = ConnectionUtil.getConnection();
 

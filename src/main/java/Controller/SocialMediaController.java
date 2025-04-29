@@ -49,31 +49,24 @@ public class SocialMediaController {
         return app;
     }
 
+    // Handler that gets all accounts
     private void getAllAccountsHandler(Context context) {
         List<Account> accounts = accountService.getAccounts();
         context.json(accounts);
     }
 
+    // Handler that gets all messages
     private void getAllMessagesHandler(Context context) {
         List<Message> messages = messageService.getMessages();
         context.json(messages);
     }
 
-    /**
-     * This is an example handler for an example endpoint.
-     * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
+    // Handler that registers a new user account
     private void registerAccountHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
         Account createdAccount = accountService.addAccount(account);
 
-        if(account.getUsername() == null || account.getUsername().isBlank() || 
-        account.getPassword() == null || 
-        account.getPassword().length() < 4) {
-            context.status(400);
-            return;
-        }
         if(createdAccount != null) {
             context.json(createdAccount);
         }
@@ -82,11 +75,12 @@ public class SocialMediaController {
         }
     }
 
+    // Handler that validates the user's login information
     private void loginAccountHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account accountCred = mapper.readValue(context.body(), Account.class);
-
         Account verifyAccount = accountService.verifyAccount(accountCred.getUsername(), accountCred.getPassword());
+        
         if(verifyAccount != null) {
             context.json(verifyAccount);
         }
@@ -95,16 +89,12 @@ public class SocialMediaController {
         }
     }
 
+    // Handler that creates a message
     private void createMessageHandler(Context context) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(context.body(), Message.class);
         Message messageCreated = messageService.addMessage(message);
 
-        if(message.message_text == null || message.message_text.isBlank() || 
-        message.getMessage_text().length() > 255 || message.getPosted_by() != message.posted_by) {
-            context.status(400);
-            return;
-        }
         if (messageCreated != null) {
             context.json(messageCreated);
         }
@@ -113,53 +103,51 @@ public class SocialMediaController {
         }
     }
     
+    // Handler that gets a message by its message id
     private void retrieveMessageByIdHandler(Context context) throws JsonProcessingException {
         int messageId = Integer.parseInt(context.pathParam("message_id"));
         Message message = messageService.getMessageById(messageId);
 
         if (message != null) {
             context.json(message);
-            context.status(200);
         } 
         else {
             context.status(200);
         }
     }
 
+    // Handler that gets a message by a user's id
     private void retrieveFromUserhandler(Context context) {
         int userId = Integer.parseInt(context.pathParam("account_id"));
         List<Message> messages = messageService.getMessageByUser(userId);
         context.json(messages);
     }
 
+    // Handler that updates a message by its message id
     private void updateMessageHandler(Context context) throws JsonProcessingException {
         int messageId = Integer.parseInt(context.pathParam("message_id"));
         ObjectMapper mapper = new ObjectMapper();
         Message messages = mapper.readValue(context.body(), Message.class);
-
-        if(messages.message_text.isBlank() || messages.message_text.length() > 255 || 
-        messages.message_text == null || messages.getMessage_id() != messages.message_id) {
-            context.status(400);
-            return;
-        }
         Message updatedMessage = messageService.updateTheMessage(messageId, messages.getMessage_text());
 
         if(updatedMessage != null) {
             context.json(updatedMessage);
-            context.status(200);
         }
         else {
             context.status(400);
         }
     }
 
+    // Handler that deletes a message by its message id
     private void deleteMessageHandler(Context context) throws JsonProcessingException {
         int messageId = Integer.parseInt(context.pathParam("message_id"));
         Message messageDeleted = messageService.removeMessage(messageId);
 
-        if (messageDeleted != null) {
+        if(messageDeleted != null) {
             context.json(messageDeleted);
         }
-        context.status(200);
+        else {
+            context.status(200);
+        }
     }
 }
