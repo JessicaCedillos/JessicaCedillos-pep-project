@@ -27,7 +27,7 @@ public class AccountService {
         account.getUsername().isBlank() || 
         account.getPassword() == null ||
         account.getPassword().length() < 4 ||
-        accountDAO.getUserAccount(account.getUsername()) != null) {         // requirement check added
+        accountDAO.getUserAccount(account.getUsername()) != null) {         // requirement has been check added
             return null;
         }   
         return accountDAO.insertAccount(account);
